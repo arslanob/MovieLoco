@@ -1,0 +1,36 @@
+{% extends 'base.html' %} 
+
+<!-- Head block for scripts -->
+{% block head %}
+<link rel="stylesheet"  type="text/css"  href="/static/stylesheets/geolocation.css"/>
+<script type="module" src="/static/geolocation.js"></script>
+{% endblock %} 
+
+<!-- Html part where map and form are -->
+{% block content %}
+<div class="row justify-content-center my-5">
+  <div class="col-md-6">
+    <h1 class="text-center">Add Movie Location</h1>
+    <p class="text-center">Enter the movie location on the map!</p>
+    <div id="map" style="height: 600px"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly" defer></script>
+    
+    <!-- Form for inputs below under the map -->
+    <p><span>Address: </span><span id="full-address-span">  - Pin A Location On The Map -</span></p>
+
+    <form method="POST">
+      {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+      'hidden' %}
+
+        {{ field.label }} {{ field }} {% for error in field.errors %}
+        <span class="text-danger"> {{ error }} </span>
+        {% endfor %}
+ 
+      {% endfor %}
+      <button type="Submit" class="btn btn-outline-success"> Add my Post!</button>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

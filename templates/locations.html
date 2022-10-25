@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block head %} 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<script>
+  const process = { env: {} };
+  process.env.GOOGLE_MAPS_API_KEY =
+    "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg";
+</script>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="/static/stylesheets/geolocation.css"
+/>
+<script type="module" src="/static/geolocation2.js"></script>
+{% endblock %}
+
+<!-- Top content -->
+{% block topcontent %}
+<section class="jumbotron text-center py-5 bg-light" style="margin-top:-1rem; background: 
+linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6) ), url('/static/images/locations-background.png'); background-size:cover;">
+  <div class="container">
+    <h1 class="jumbotron-heading text-light">Locations</h1>
+    <p class="lead text-light">Lookup Movie Locations on the map! Enter a Location!</p>
+  </div>
+</section>
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col">
+        <div id='movie-list' class="row card-deck">
+        
+        {% for post in posts %}
+        <div>
+        <div class="row my-2">
+          <div class="card p-4">
+            <a href="/posts/{{ post.id }}">
+            <img class="card-img-top"  style="max-height:350px" src="{{post.image_url}}" alt="Card image cap">
+            
+            <div class="card-body text-center">
+              <h5 class="card-title ">{{post.title}}</h5>
+              <p class="my-1">
+                <span class="text-muted"><em>Movie:</em></span>
+                <span>{{ post.movie.title}}</span>
+              </p>
+              <p class="my-1">
+                <span>
+                  <span class="text-muted"><em>Location:</em></span>
+                  <span>{{ post.location.city }}, {{ post.location.state }}  {{ post.location.country }}</span>
+                </span>
+              </p> 
+            </div> 
+            </a> 
+          </div>
+        </div>
+      </div>
+        {% endfor %}
+    </div>
+    </div>
+
+   <!-- Google Maps API below--> 
+<div class="col m-4">
+  <h1 class="text-center">Map</h1>
+    <div id="map" style="height:800px;"></div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp1jKqmi89h2mhNsKtSZYK3-IT3xEq8go&callback=initMap&v=weekly"
+      defer
+    ></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</div>
+</div>
+{% endblock %}

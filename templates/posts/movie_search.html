@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+<!-- Top part where users search -->
+{% block topcontent %}
+<section class="jumbotron text-center py-5 bg-light" style="margin-top:-1rem; background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url('/static/images/movies-background.jpeg'); background-size:60%;">
+  <div class="container">
+    <h1 class="jumbotron-heading text-light">SEARCH MOVIES</h1>
+    <p class="lead text-light">Lookup Movies to see movie locations!</p>
+    <p>
+      <form id='movie-search-form' method="POST">
+        <input id='movie-name' type="text"> </input>
+        <button type="Submit" class="btn btn-primary my-2 mx-2">Search</button>
+      </form>
+    </p>
+  </div>
+</section>
+{% endblock %}
+
+<!-- Bottom part where movies are generated -->
+{% block content %}
+  <div id='movie-list' class="row card-deck my-3">
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/static/movie-search.js"></script>
+{% endblock %}

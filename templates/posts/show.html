@@ -1,0 +1,90 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<div class="bg"></div>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <ul class="list-group no-hover" id="messages">
+      
+      <li class="list-group-item">
+        <a href="/users/{{ post.user.id }}">
+          <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
+        </a>
+        <div class="message-area">
+
+          <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+          <span class="text-muted"><small>{{ post.created_at.strftime('%d %B %Y') }}</small></span>
+          <h5>{{ post.title }}</h5>
+
+          <hr/>
+          
+          <h6> <span class="text-muted"><em>Description:</em></span> </h6>
+          <p>{{ post.description }}</p>
+          <h6> <span class="text-muted"><em>Movie:</em></span> </h6>
+          <p>{{ post.movie.title}}</p>
+          <h6> <span class="text-muted"><em>Address:</em></span> </h6>
+          <p>{{ post.location.address }}</p>
+
+          <hr/>
+
+          <div class="text-center p-3">
+            <image style="max-height:500px" src="{{post.image_url}}"></image>
+          </div>
+        </div>
+
+        <!-- Thumbs up button available when user is logged in  -->
+        {% if post.user_id != g.user.id and g.user%}
+        <form
+          method="POST"
+          action="/users/add_like/{{ post.id }}"
+          id="messages-form"
+          class="messages-form"
+          data-id="{{ post.id }}"
+        >
+          <button type="submit" class="btn btn-sm {{'btn-primary' if post.id in likes else 'btn-secondary'}}">
+            <i class="fa fa-thumbs-up"></i>
+          </button>
+        </form>
+        {% endif %}
+        
+      </li>
+
+    </ul>
+  </div>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  // handles like/unlike of a post
+
+  async function processForm(evt) {
+    evt.preventDefault();
+    let postID = $(this).attr("data-id");
+
+    const resp = await axios({
+      method: "POST",
+      url: `/users/add_like/${postID}`,
+    });
+    if ($(this).children("button").hasClass("btn-primary")) {
+      $(this).children("button").removeClass("btn-primary");
+      $(this).children("button").addClass("btn-secondary");
+    } else {
+      $(this).children("button").removeClass("btn-secondary");
+      $(this).children("button").addClass("btn-primary");
+    }
+  }
+
+  $(".messages-form").on("submit", processForm);
+
+  // reloads the page when using browser back button
+  window.addEventListener("pageshow", function (event) {
+    var historyTraversal =
+      event.persisted ||
+      (typeof window.performance != "undefined" &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      // Handle page restore.
+      window.location.reload();
+    }
+  });
+</script>
+{% endblock %}
